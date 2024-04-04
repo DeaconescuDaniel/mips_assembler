@@ -105,7 +105,7 @@ uint32_t parseOperation(TOK op, const char *str) {
                     }
                     break;
                 default:
-                    if (sscanf(str, "%*[^$]$%hhu,$%hhu,$%hhu", &s, &t, &d) == 3) {
+                    if (sscanf(str, "%*[^$]$%hhu,$%hhu,$%hhu", &d, &s, &t) == 3) {
                         if (s > 31 || t > 31 || d > 31) {
                             return -1;
                         }
@@ -144,7 +144,7 @@ uint32_t parseOperation(TOK op, const char *str) {
                     }
                     break;
                 default:
-                    if (sscanf(str, "%*[^$]$%hhu,$%hhu,%hd", &s, &t, &imm) == 3) {
+                    if (sscanf(str, "%*[^$]$%hhu,$%hhu,%hd", &t, &s, &imm) == 3) {
                         if (s > 31 || t > 31 || imm > 65535) {
                             return -1;
                         }
