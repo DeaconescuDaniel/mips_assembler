@@ -91,7 +91,7 @@ uint32_t parseOperation(TOK op, const char *str) {
                 case slt:
                 case sra:
                 case srl:
-                    if (sscanf(str, "%*[^$]$%hhu,$%hhu,$%hhu", &t, &d, &sa) == 3) {
+                    if (sscanf(str, "%*[^$]$%hhu,$%hhu,%hhu", &d, &t, &sa) == 3) {
                         if (s > 31 || t > 31 || d > 31) {
                             return -1;
                         }
@@ -114,8 +114,8 @@ uint32_t parseOperation(TOK op, const char *str) {
             }
             out &= (((uint32_t) opcode) << 24) | 0x3FFFFFF;
             out &= (((uint32_t) s) << 21) | 0xFC1FFFFF;
-            out &= (((uint32_t) t) << 17) | 0xFFE0FFFF;
-            out &= (((uint32_t) d) << 12) | 0xFFFF07FF;
+            out &= (((uint32_t) t) << 16) | 0xFFE0FFFF;
+            out &= (((uint32_t) d) << 11) | 0xFFFF07FF;
             out &= (((uint32_t) sa) << 6) | 0xFFFFF83F;
             out &= ((uint32_t) fun >> 2) | 0xFFFFFFC0;
             return out;
@@ -156,8 +156,8 @@ uint32_t parseOperation(TOK op, const char *str) {
 
             out &= (((uint32_t) opcode) << 24) | 0x3FFFFFF;
             out &= (((uint32_t) s) << 21) | 0xFC1FFFFF;
-            out &= (((uint32_t) t) << 17) | 0xFFE0FFFF;
-            out &= ((uint32_t) imm) | 0xFFFF0000;
+            out &= (((uint32_t) t) << 16) | 0xFFE0FFFF;
+            out &= ((uint32_t) imm<<1) | 0xFFFF0000;
             return out;
         case J_TYPE:
             if (sscanf(str, "j %d", &jaddr) == 1) {
@@ -165,7 +165,7 @@ uint32_t parseOperation(TOK op, const char *str) {
                     return -1;
                 }
                 out &= (((uint32_t) opcode) << 24) | 0x3FFFFFF;
-                out &= ((uint32_t) jaddr) | 0xFC000000;
+                out &= ((uint32_t) jaddr<<1) | 0xFC000000;
                 return out;
             }
             break;

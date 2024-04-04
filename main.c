@@ -47,7 +47,7 @@ void insert_underscores(char *str, OpType opType) {
 
     int padding = 39 - length;
     if (padding > 0) {
-        memmove(str + 1, str, length);
+        memmove(str + 2, str, length);
         str[0] = 'B';
         str[1] = '\"';
         length++;
