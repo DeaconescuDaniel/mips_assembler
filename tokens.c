@@ -112,22 +112,24 @@ uint32_t parseOperation(TOK op, const char *str) {
                     }
                     break;
             }
-            out &= (((uint32_t) opcode) << 26) | 0x3FFFFFF;
+            out &= (((uint32_t) opcode) << 24) | 0x3FFFFFF;
             out &= (((uint32_t) s) << 21) | 0xFC1FFFFF;
             out &= (((uint32_t) t) << 17) | 0xFFE0FFFF;
             out &= (((uint32_t) d) << 12) | 0xFFFF07FF;
             out &= (((uint32_t) sa) << 6) | 0xFFFFF83F;
-            out &= ((uint32_t) fun) | 0xFFFFFFC0;
+            out &= ((uint32_t) fun >> 2) | 0xFFFFFFC0;
             return out;
 
         case I_TYPE:
             switch (op) {
                 case lw:
                 case sw:
-                    if (sscanf(str, "%*[^$]$%hhu,$%hd($%hhu)", &t, &imm, &s) == 3) {
+                    if (sscanf(str, "%*[^$]$%hhu,%hd($%hhu)", &t, &imm, &s) == 3) {
                         if (s > 31 || t > 31 || imm > 65535) {
                             return -1;
                         }
+                    } else {
+                        return -1;
                     }
                     break;
                 case bgez:
@@ -137,6 +139,8 @@ uint32_t parseOperation(TOK op, const char *str) {
                         if (s > 31 || t > 31 || imm > 65535) {
                             return -1;
                         }
+                    }else{
+                        return -1;
                     }
                     break;
                 default:
@@ -144,11 +148,13 @@ uint32_t parseOperation(TOK op, const char *str) {
                         if (s > 31 || t > 31 || imm > 65535) {
                             return -1;
                         }
+                    }else{
+                        return -1;
                     }
                     break;
             }
 
-            out &= (((uint32_t) opcode) << 26) | 0x3FFFFFF;
+            out &= (((uint32_t) opcode) << 24) | 0x3FFFFFF;
             out &= (((uint32_t) s) << 21) | 0xFC1FFFFF;
             out &= (((uint32_t) t) << 17) | 0xFFE0FFFF;
             out &= ((uint32_t) imm) | 0xFFFF0000;
@@ -158,7 +164,7 @@ uint32_t parseOperation(TOK op, const char *str) {
                 if (jaddr < 0) {
                     return -1;
                 }
-                out &= (((uint32_t) opcode) << 26) | 0x3FFFFFF;
+                out &= (((uint32_t) opcode) << 24) | 0x3FFFFFF;
                 out &= ((uint32_t) jaddr) | 0xFC000000;
                 return out;
             }
@@ -176,44 +182,26 @@ uint8_t getFunction(TOK op) {
             return 0x80;
         case and:
             return 0x90;
-        case beq:
-            return 0x10;
-        case bgez:
-            return 0x02;
-        case bgtz:
-            return 0x1C;
-        case bne:
-            return 0x18;
-        case j:
-            return 0x08;
         case jr:
-            return 0x00;
-        case lw:
-            return 0x8C;
+            return 0x20;
         case noop:
             return 0x00;
         case or:
-            return 0x00;
-        case ori:
-            return 0x34;
+            return 0x94;
         case sll:
             return 0x00;
         case sllv:
-            return 0x00;
+            return 0x10;
         case slt:
-            return 0x00;
-        case slti:
-            return 0x24;
+            return 0xA8;
         case sra:
-            return 0x00;
+            return 0x0C;
         case srl:
-            return 0x00;
+            return 0x08;
         case sub:
-            return 0x00;
-        case sw:
-            return 0xAC;
+            return 0x88;
         case xor:
-            return 0x00;
+            return 0x98;
         default:
             return -1;;
     }

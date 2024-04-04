@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/bests/OneDrive/Desktop/Extra/acLinker
+# Install script for directory: C:/Users/bests/OneDrive/Desktop/Extra/mips_assembler
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/bests/OneDrive/Desktop/Extra/acLinker/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/bests/OneDrive/Desktop/Extra/mips_assembler/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
